@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './HomePage.css'
+import { PageContainer } from '../layout'
 
 type Relationship = 'Mom' | 'Dad' | 'Brother' | 'Sister' | 'Wife' | 'Son' | 'Daughter'
 
@@ -26,7 +27,7 @@ const FamilyMember: FC<FamilyMemberProps> = ({ relationship, name, memberId }) =
 
 export const HomePage = () => {
   return (
-    <div>
+    <PageContainer>
       <h2 style={{ textAlign: 'center' }}>My Family</h2>
       <div className='group-container'>
         <div className='group-title'>Parents</div>
@@ -55,6 +56,6 @@ export const HomePage = () => {
           <FamilyMember relationship='Son' name='Clayton Reichardt' memberId={'3'} />
         </div>
       </div>
-    </div>
+    </PageContainer>
   )
 }

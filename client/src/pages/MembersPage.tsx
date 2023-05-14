@@ -1,17 +1,11 @@
-import { useEffect, useState } from 'react'
 import { Tabs } from '@mantine/core';
 import { IconUsersGroup, IconUserPlus } from '@tabler/icons-react';
-import axios from 'axios'
-import { AddMemberPage } from '.';
+import { PageContainer } from '../layout';
+import { AddMember, ManageMembers } from '../components';
 
 export const ManageMembersPage = () => {
-  const [members, setMembers] = useState<any[]>([]) // TODO: move to global state to reduce db calls
-  useEffect(() => {
-    axios.get('http://localhost:8000/members').then((res) => setMembers(res.data))
-  }, [])
-
   return (
-    <div>
+    <PageContainer>
       <Tabs defaultValue='familyMembers'>
         <Tabs.List>
           <Tabs.Tab value='familyMembers' icon={<IconUsersGroup size='0.8rem' />}>Family Members</Tabs.Tab>
@@ -19,18 +13,12 @@ export const ManageMembersPage = () => {
         </Tabs.List>
 
         <Tabs.Panel value='familyMembers'>
-          <div>
-            {members.length && members.map(m => (
-              <div key={m._id}>
-                {m.firstName} {m.middleName ?? ''} {m.lastName}
-              </div>
-            ))}
-          </div>
+          <ManageMembers />
         </Tabs.Panel>
         <Tabs.Panel value='addMember'>
-          <AddMemberPage />
+          <AddMember />
         </Tabs.Panel>
       </Tabs>
-    </div>
+    </PageContainer>
   )
 }

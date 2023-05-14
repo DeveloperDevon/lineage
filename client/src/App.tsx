@@ -1,19 +1,22 @@
 import { useEffect } from 'react'
-import { AppBar } from "./layout"
 import { Router } from './Router'
 import { MantineProvider } from '@mantine/core';
+import { QueryClient, QueryClientProvider } from 'react-query'
 import axios from 'axios'
 
 function App() {
+  const queryClient = new QueryClient()
   useEffect(() => {
     axios.get('http://localhost:8000/members').then(console.log)
   }, [])
 
   return (
-    <MantineProvider withGlobalStyles withNormalizeCSS>
-      <AppBar />
-      <Router />
-    </MantineProvider>
+    <QueryClientProvider client={queryClient}>
+      <MantineProvider withGlobalStyles withNormalizeCSS>
+        {/* <AppBar /> */}
+        <Router />
+      </MantineProvider>
+    </QueryClientProvider>
   )
 }
 

@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { AddMemberPage, HomePage, MemberPage, ManageMembersPage } from './pages'
+import { HomePage, MemberPage, ManageMembersPage } from './pages'
 
 const router = createBrowserRouter([
   {
@@ -9,10 +9,6 @@ const router = createBrowserRouter([
   {
     path: '/member/:memberId',
     element: <MemberPage />
-  },
-  {
-    path: '/add-member',
-    element: <AddMemberPage />
   },
   {
     path: '/members',
