@@ -13,6 +13,7 @@ app.get('/', (_, res) => res.send('FOO'))
 app.post('/member', handlers.addNewMemberHandler)
 app.get('/members', handlers.findAllMembersHandler)
 app.put('/members/child-parent-relationship', handlers.setChildParentRelationshipHandler)
+app.put('/members/spouse-relationship', handlers.setSpouseRelationshipHandler)
 
 dbInit()
 

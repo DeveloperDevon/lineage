@@ -1,3 +1,6 @@
 export * from './AddMember'
 export * from './ManageMembers'
+export * from './MemberCard'
 export * from './Parents'
+export * from './Siblings'
+export * from './Spouse'

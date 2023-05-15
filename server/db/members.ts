@@ -4,7 +4,7 @@ import { db } from './index'
 export const getMembers = async () => {
   try {
     const collection = await db.collection('members')
-    const results = await collection.find({}).toArray()
+    const results = await collection.find({}).sort({ firstName: 1 }).toArray()
     return results
   } catch (err) {
     console.error(err)
@@ -33,9 +33,52 @@ export const setChildParentRelationship = async ({ relationship, childId, parent
     const field = relationship === 'mother' ? 'motherId' : 'fatherId'
     const query = { _id: new ObjectId(childId) }
     const updates = { $set: { [field]: parentId } }
-    const collection = await db.collection('members')
-    const results = await collection.updateOne(query, updates)
+    const members = await db.collection('members')
+    const results = await members.updateOne(query, updates)
     console.log(results)
+    return results
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+interface setSpouseRelationshipProps {
+  memberId: string
+  spouseId: string
+}
+
+export const setSpouseRelationship = async ({ memberId, spouseId }: setSpouseRelationshipProps) => {
+  try {
+
+    const members = await db.collection('members')
+
+    const results = await members.bulkWrite([
+      {
+        updateOne: {
+          filter: {
+            _id: new ObjectId(memberId)
+          },
+          update: {
+            $set: {
+              spouseId: spouseId
+            }
+          }
+        }
+      },
+      {
+        updateOne: {
+          filter: {
+            _id: new ObjectId(spouseId)
+          },
+          update: {
+            $set: {
+              spouseId: memberId
+            }
+          }
+        }
+      }
+    ])
+
     return results
   } catch (err) {
     console.error(err)

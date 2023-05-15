@@ -1,20 +1,23 @@
 import { FC, useState } from 'react'
 import { useQuery } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import { Button, Card, Container, Modal } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks';
 import { membersQuery } from '../../lib/queries';
+import { IMember } from '../../lib/types'
 import axios from 'axios'
 
 interface ParentsProps {
-  mother: any //TODO: Create member interface
-  father: any
-  member: any
+  mother?: IMember
+  father?: IMember
+  member?: IMember
 }
 
 export const Parents: FC<ParentsProps> = ({ mother, father, member }) => {
   const [selectedParent, setSelectedParent] = useState<any>()
   const [selectedRelationship, setSelectedRelationship] = useState<'mother' | 'father' | undefined>(undefined)
   const [opened, { open, close }] = useDisclosure(false);
+  const navigate = useNavigate()
   const { data } = useQuery('members', membersQuery)
 
   const openModal = (relationship: 'mother' | 'father') => {
@@ -40,9 +43,9 @@ export const Parents: FC<ParentsProps> = ({ mother, father, member }) => {
       <Modal opened={opened} onClose={close} title={`Add ${selectedRelationship}`} centered fullScreen>
         <Container>
           {selectedParent &&
-            <h4>Set {selectedParent.firstName} {selectedParent.lastName} as a {selectedRelationship} to {member.firstName} {member.lastName}</h4>
+            <h4>Set {selectedParent.firstName} {selectedParent.lastName} as a {selectedRelationship} to {member?.firstName} {member?.lastName}</h4>
           }
-          <div>{data.filter((a: any) => a._id !== member._id).map((d: any) => (
+          <div>{data?.filter((a: any) => a._id !== member?._id).map((d: any) => (
             <div key={d._id} onClick={() => setSelectedParent(d)}>
               {d.firstName} {d.lastName}
             </div>
@@ -58,7 +61,7 @@ export const Parents: FC<ParentsProps> = ({ mother, father, member }) => {
         <h4>Parents</h4>
       </Container>
       <Container style={{ display: 'flex', justifyContent: 'space-between' }}>
-        {mother ? <Card withBorder style={{ width: '100%' }} mx='5px'>
+        {mother ? <Card withBorder style={{ width: '100%' }} mx='5px' onClick={() => navigate(`/member/${mother._id}`)}>
           {mother.firstName} {mother.lastName}
         </Card>
           :
@@ -67,7 +70,7 @@ export const Parents: FC<ParentsProps> = ({ mother, father, member }) => {
           </Card>
         }
         {father ?
-          <Card withBorder style={{ width: '100%' }} mx='5px'>
+          <Card withBorder style={{ width: '100%' }} mx='5px' onClick={() => navigate(`/member/${father._id}`)}>
             {father.firstName} {father.lastName}
           </Card>
           :
@@ -76,7 +79,6 @@ export const Parents: FC<ParentsProps> = ({ mother, father, member }) => {
           </Card>
         }
       </Container>
-
     </>
   )
 }
