@@ -4,7 +4,7 @@ import { Button, Card, Container, Modal } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks';
 import { membersQuery } from '../../lib/queries';
 import { IMember } from '../../lib/types';
-import axios from 'axios'
+import { server } from '../../lib/axios';
 import { MemberCard } from '.';
 
 interface SpouseProps {
@@ -23,7 +23,7 @@ export const Spouse: FC<SpouseProps> = ({ member, spouse }) => {
     console.log({ memberId, spouseId })
 
     try {
-      const response = await axios.put('http://localhost:8000/members/spouse-relationship', {
+      const response = await server.put('/members/spouse-relationship', {
         memberId,
         spouseId: selectedSpouse?._id,
       })

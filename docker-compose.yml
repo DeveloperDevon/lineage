@@ -1,30 +1,46 @@
 version: "3.8"
 
+volumes:
+  db-vol:
+
+
 services:
   client:
     build:
       context: ./client
+    volumes:
+      - ./client:/app
+      - /app/node_modules
     ports:
       - 3000:3000
+
   server:
     build:
       context: ./server
     depends_on:
       - db
+    volumes:
+      - ./server:/app
+      - /app/node_modules
     restart: unless-stopped
     ports:
       - 3001:3001
+    command: npm run dev
+
   db:
+    image: mongo
     ports:
       - 27017:27017
     restart: unless-stopped
+    volumes:
+      - db-vol:/data/db
     # logging:
     #   options:
     #     max-size: 1g
     # environment:
     #   - MONGO_INITDB_ROOT_USERNAME=mongoadmin
     #   - MONGO_INITDB_ROOT_PASSWORD=bdung
-    image: mongo
+
   db-admin:
     ports:
       - 3002:8081

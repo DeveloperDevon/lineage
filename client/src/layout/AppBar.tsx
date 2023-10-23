@@ -6,7 +6,7 @@ export const AppBar = () => {
   const navigate = useNavigate()
   return (
     <div className='appbar-container'>
-      <Title order={3} onClick={() => navigate('/')}>Lineage</Title>
+      <Title order={3} onClick={() => navigate('/')}>Kin</Title>
     </div>
   )
 }

@@ -1,18 +1,22 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { HomePage, MemberPage, ManageMembersPage } from './pages'
+import * as Pages from './pages'
 
 const router = createBrowserRouter([
   {
+    path: '/login',
+    element: <Pages.LoginPage />
+  },
+  {
     path: '/',
-    element: <HomePage />
+    element: <Pages.HomePage />
   },
   {
     path: '/member/:memberId',
-    element: <MemberPage />
+    element: <Pages.MemberPage />
   },
   {
     path: '/members',
-    element: <ManageMembersPage />
+    element: <Pages.ManageMembersPage />
   }
 ])
 

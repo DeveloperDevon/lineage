@@ -1,6 +1,6 @@
 import { TextInput, Button, Group, Box } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import axios from 'axios';
+import { server } from '../../lib/axios';
 
 export const AddMember = () => {
   const form = useForm({
@@ -16,7 +16,7 @@ export const AddMember = () => {
   });
 
   const handleSubmit = async (values: any) => {
-    await axios.post('http://localhost:8000/member', values)
+    await server.post('/member', values)
       .then(console.log)
       .catch(console.error)
     console.log(values)
@@ -43,7 +43,7 @@ export const AddMember = () => {
             // placeholder=""
             {...form.getInputProps('lastName')}
           />
-          <Group position="right" mt="md">
+          <Group mt="md">
             <Button type="submit">Submit</Button>
           </Group>
         </form>

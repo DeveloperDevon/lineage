@@ -2,19 +2,18 @@ import express from 'express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import { dbInit } from './db/init'
-import * as handlers from './handlers'
+import { authRouter, membersRouter } from './routes'
 
 const PORT = 3001
+
 const app = express()
 
 app.use(cors())
 app.use(bodyParser.json({ type: 'application/*' }))
 
-app.get('/', (_, res) => res.send('FOO'))
-app.post('/member', handlers.addNewMemberHandler)
-app.get('/members', handlers.findAllMembersHandler)
-app.put('/members/child-parent-relationship', handlers.setChildParentRelationshipHandler)
-app.put('/members/spouse-relationship', handlers.setSpouseRelationshipHandler)
+app.get('/ping', (_, res) => res.send('pong'))
+app.use('/auth', authRouter)
+app.use('/members', membersRouter)
 
 dbInit()
 

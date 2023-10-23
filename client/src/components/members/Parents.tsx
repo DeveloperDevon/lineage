@@ -5,7 +5,7 @@ import { Button, Card, Container, Modal } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks';
 import { membersQuery } from '../../lib/queries';
 import { IMember } from '../../lib/types'
-import axios from 'axios'
+import { server } from '../../lib/axios';
 
 interface ParentsProps {
   mother?: IMember
@@ -27,7 +27,7 @@ export const Parents: FC<ParentsProps> = ({ mother, father, member }) => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.put('http://localhost:8000/members/child-parent-relationship', {
+      const response = await server.put('/members/child-parent-relationship', {
         relationship: selectedRelationship,
         parent: selectedParent,
         child: member

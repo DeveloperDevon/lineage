@@ -2,17 +2,17 @@ import { useEffect } from 'react'
 import { Router } from './Router'
 import { MantineProvider } from '@mantine/core';
 import { QueryClient, QueryClientProvider } from 'react-query'
-import axios from 'axios'
+import { server } from './lib/axios';
 
 function App() {
   const queryClient = new QueryClient()
   useEffect(() => {
-    axios.get('http://localhost:8000/members').then(console.log)
+    server.get('/members').then(console.log)
   }, [])
 
   return (
     <QueryClientProvider client={queryClient}>
-      <MantineProvider withGlobalStyles withNormalizeCSS>
+      <MantineProvider>
         {/* <AppBar /> */}
         <Router />
       </MantineProvider>
