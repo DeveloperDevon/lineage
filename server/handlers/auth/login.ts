@@ -11,8 +11,8 @@ export const loginHandler = async (req: Request, res: Response) => {
     return jwt.sign(
       { user },
       "secret",
-      { expiresIn: "5m", algorithm: "HS256" },
-      function (err, authToken) {
+      { expiresIn: "10m", algorithm: "HS256" },
+      (err, authToken) => {
         if (err) throw err;
         res.cookie("authToken", authToken, {
           secure: false,
@@ -24,7 +24,7 @@ export const loginHandler = async (req: Request, res: Response) => {
       },
     );
   } catch (error) {
-    console.error("JWT SIGN ERROR", error);
+    console.error("JWT Signature Error: ", error);
     res.sendStatus(500);
   }
 };

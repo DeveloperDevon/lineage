@@ -1,6 +1,6 @@
-import { PageContainer } from "../../layout";
+import { AuthContainer } from "../../layout";
 import { useNavigate } from "react-router-dom";
-import { Box, Button, Center, TextInput, Title } from "@mantine/core";
+import { Button, Container, Fieldset, Group, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { server } from "../../lib/axios";
 
@@ -23,13 +23,10 @@ export const LoginPage = () => {
   };
 
   return (
-    <PageContainer>
-      <Center mt="lg">
-        <Box>
+    <AuthContainer>
+      <Container size="xs" mt={40}>
+        <Fieldset legend="Login">
           <form onSubmit={form.onSubmit(handleSubmit)}>
-            <Title my="lg" order={4}>
-              Login
-            </Title>
             <TextInput
               {...form.getInputProps("email")}
               label="Email"
@@ -40,12 +37,14 @@ export const LoginPage = () => {
               label="Password"
               placeholder="Enter password"
             />
-            <Button type="submit" my="lg">
-              Login
-            </Button>
+            <Group justify="flex-end" mt="md">
+              <Button type="submit" my="lg">
+                Login
+              </Button>
+            </Group>
           </form>
-        </Box>
-      </Center>
-    </PageContainer>
+        </Fieldset>
+      </Container>
+    </AuthContainer>
   );
 };

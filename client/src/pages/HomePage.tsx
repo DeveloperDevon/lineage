@@ -1,8 +1,6 @@
-import { FC, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import "./HomePage.css";
+import { FC } from "react";
 import { PageContainer } from "../layout";
-import { membersQuery } from "../lib/queries";
+import { Avatar, Card, Center, Grid, Group, Text, Title } from "@mantine/core";
 
 type Relationship =
   | "Mom"
@@ -19,78 +17,91 @@ interface FamilyMemberProps {
   memberId: string;
 }
 
-const FamilyMember: FC<FamilyMemberProps> = ({ name, memberId }) => {
-  const navigate = useNavigate();
-  const handleClick = () => {
-    navigate(`/member/${memberId}`);
-  };
+const FamilyCard: FC<FamilyMemberProps> = ({
+  relationship,
+  name,
+  memberId,
+}) => {
   return (
-    <div className="family-member-container" onClick={handleClick}>
-      {/* <div className='relationship'>{relationship}</div> */}
-      <div className="name">{name}</div>
-    </div>
+    <Card withBorder radius="md" shadow="sm" padding="md" w={240}>
+      <Center>
+        <Avatar radius="md" size="xl" color="blue" />
+      </Center>
+      <Center>
+        <Title order={4}>{relationship}</Title>
+      </Center>
+      <Center>
+        <Text order={5}>{name}</Text>
+      </Center>
+    </Card>
   );
 };
 
 export const HomePage = () => {
-  // useEffect(() => {
-  //   membersQuery().then(console.log);
-  // }, []);
-
   return (
     <PageContainer>
-      <h2 style={{ textAlign: "center" }}>My Family</h2>
-      <div className="group-container">
-        <div className="group-title">Parents</div>
-        <div className="members-container">
-          <FamilyMember relationship="Mom" name="Shelli Auger" memberId={"1"} />
-          <FamilyMember
+      <Title mb={20} order={2}>
+        My Family
+      </Title>
+
+      <Card withBorder radius="sm" my={5}>
+        <Title order={3}>Parents</Title>
+        <Group>
+          <FamilyCard
+            relationship="Mom"
+            name={"Shelli Auger"}
+            memberId={"abc123"}
+          />
+          <FamilyCard
             relationship="Dad"
-            name="Carl Reichardt"
-            memberId={"1"}
+            name={"Carl Reichardt"}
+            memberId={"abc123"}
           />
-        </div>
-      </div>
-      <div className="group-container">
-        <div className="group-title">Siblings</div>
-        <div className="members-container">
-          <FamilyMember
+        </Group>
+      </Card>
+
+      <Card withBorder radius="sm" my={5}>
+        <Title order={3}>Siblings</Title>
+        <Group>
+          <FamilyCard
             relationship="Brother"
-            name="Josh Reichardt"
-            memberId={"1"}
+            name={"Josh Reichardt"}
+            memberId={"abc123"}
           />
-          <FamilyMember
+          <FamilyCard
             relationship="Sister"
-            name="Krista Fischer"
-            memberId={"1"}
+            name={"Krista Fischer"}
+            memberId={"abc123"}
           />
-        </div>
-      </div>
-      <div className="group-container">
-        <div className="group-title">Spouse</div>
-        <div className="members-container">
-          <FamilyMember
+        </Group>
+      </Card>
+
+      <Card withBorder radius="sm" my={5}>
+        <Title order={3}>Spouse</Title>
+        <Group>
+          <FamilyCard
             relationship="Wife"
-            name="Chandler Reichardt"
-            memberId={"2"}
+            name={"Chandler Reichardt"}
+            memberId={"abc123"}
           />
-        </div>
-      </div>
-      <div className="group-container">
-        <div className="group-title">Children</div>
-        <div className="members-container">
-          <FamilyMember
-            relationship="Daughter"
-            name="Holland Reichardt"
-            memberId={"4"}
-          />
-          <FamilyMember
+        </Group>
+      </Card>
+
+      <Card withBorder radius="sm" my={5}>
+        <Title order={3}>Children</Title>
+        <Group>
+          <FamilyCard
             relationship="Son"
-            name="Clayton Reichardt"
-            memberId={"3"}
+            name={"Clayton Reichardt"}
+            memberId={"abc123"}
           />
-        </div>
-      </div>
+          <FamilyCard
+            relationship="Daughter"
+            name={"Holland Reichardt"}
+            memberId={"abc123"}
+          />
+        </Group>
+      </Card>
     </PageContainer>
   );
 };

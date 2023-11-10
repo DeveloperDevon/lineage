@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { server } from "../axios";
 
 export const useAuth = () => {
+  const navigate = useNavigate();
   const [auth, setAuth] = useState<any>({
     loading: false,
     isAuthorized: false,
@@ -19,7 +21,10 @@ export const useAuth = () => {
           user: data.user,
         });
       })
-      .catch(() => setAuth({ loading: false, isAuthorized: false, user: "" }));
+      .catch(() => {
+        navigate("/login", { replace: true });
+        setAuth({ loading: false, isAuthorized: false, user: "" });
+      });
   }, []);
 
   return [auth, setAuth];
