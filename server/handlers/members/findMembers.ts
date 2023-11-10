@@ -1,7 +1,9 @@
-import { Request, Response } from 'express'
-import { getMembers } from '../../db'
+import { Request, Response } from "express";
+import { getMembers } from "../../db";
 
-export const findAllMembersHandler = async (_: Request, res: Response) => {
-  const members = await getMembers()
-  res.send(members)
-}
+export const findAllMembersHandler = async (req: Request, res: Response) => {
+  const cookies = req.cookies;
+  console.log("COOKIESS", cookies);
+  const members = await getMembers();
+  res.send(members);
+};

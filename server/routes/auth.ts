@@ -1,8 +1,9 @@
-import { Router } from 'express'
-import { loginHandler } from '../handlers/auth'
+import { Router } from "express";
+import { authHandler, loginHandler } from "../handlers/auth";
 
-const authRouter = Router()
+const authRouter = Router();
 
-authRouter.post('/login', loginHandler)
+authRouter.get("/", authHandler);
+authRouter.post("/login", loginHandler);
 
-export { authRouter }
+export default authRouter;

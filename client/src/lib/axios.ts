@@ -1,7 +1,8 @@
-import axios from 'axios'
+import axios from "axios";
 
-const SERVER_URL = 'http://localhost:3001'
+const SERVER_URL = "http://localhost:3001";
 
 export const server = axios.create({
-    baseURL: SERVER_URL
-})
+  baseURL: SERVER_URL,
+  withCredentials: true,
+});
