@@ -11,6 +11,44 @@ export const getMembers = async () => {
   }
 };
 
+export const getMemberFamily = async (memberId: string) => {
+  const id = new ObjectId(memberId);
+  try {
+    const collection = await db.collection("members");
+    const familyMembers = await collection.aggregate([
+      { $match: { _id: id } },
+      {
+        $lookup: {
+          from: "members",
+          localField: "parentIds",
+          foreignField: "_id",
+          as: "parents",
+        },
+      },
+      {
+        $lookup: {
+          from: "members",
+          localField: "childrenIds",
+          foreignField: "_id",
+          as: "children",
+        },
+      },
+      {
+        $lookup: {
+          from: "members",
+          localField: "spouseId",
+          foreignField: "_id",
+          as: "spouse",
+        },
+      },
+    ]);
+    const memberFamily = await familyMembers.toArray();
+    return memberFamily[0];
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const getMemberByEmail = async (email: string) => {
   try {
     const collection = await db.collection("members");
@@ -26,19 +64,20 @@ export const getMemberByEmail = async (email: string) => {
 export const verifyMember = async (email: string, password: string) => {
   try {
     const collection = await db.collection("members");
-    const results = await collection.findOne({ email });
-    if (!results)
+    const member = await collection.findOne({ email });
+    if (!member)
       return {
         verified: false,
         reason: `No user found with the email ${email}`,
       };
-    const foundPassword = results.password;
+    const foundPassword = member.password;
     if (password !== foundPassword) {
-      return { verified: false, reason: "Invalid Credentials" };
+      return { verified: false, member: null, reason: "Invalid Credentials" };
     }
-    const { firstName, middleName, lastName } = results;
-    const user = { firstName, middleName, lastName, email };
-    return { verified: true, user };
+    // const { firstName, middleName, lastName, _id } = results;
+    delete member.password;
+    // const user = { firstName, middleName, lastName, email };
+    return { verified: true, member };
   } catch (err) {
     console.error(err);
     return { verified: false };
@@ -49,6 +88,41 @@ export const addNewMember = async (member: any) => {
   try {
     const collection = await db.collection("members");
     const results = await collection.insertOne(member);
+    console.log("New Member Added:", results);
+    return results;
+  } catch (err) {
+    console.error(err);
+    return { success: false, error: err };
+  }
+};
+
+export const addRelationship = async (
+  memberId: string,
+  relationship: string,
+  relationshipId: string,
+) => {
+  try {
+    const collection = await db.collection("members");
+    let results: any;
+    if (["sibling", "child"].includes(relationship.toLowerCase())) {
+      await collection.updateOne(
+        { _id: new ObjectId(memberId) },
+        {
+          $push: {
+            [relationship.toLowerCase() + "Ids"]: new ObjectId(relationshipId),
+          },
+        },
+      );
+    } else {
+      await collection.updateOne(
+        { _id: new ObjectId(memberId) },
+        {
+          $set: {
+            [relationship.toLowerCase() + "Id"]: new ObjectId(relationshipId),
+          },
+        },
+      );
+    }
     return results;
   } catch (err) {
     console.error(err);
@@ -66,7 +140,6 @@ export const setChildParentRelationship = async ({
   childId,
   parentId,
 }: setChildParentRelationshipProps) => {
-  // console.log({ childId, parentId })
   try {
     const field = relationship === "mother" ? "motherId" : "fatherId";
     const query = { _id: new ObjectId(childId) };

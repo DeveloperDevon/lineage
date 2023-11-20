@@ -1,14 +1,7 @@
 import { useEffect, useState } from "react";
 import { server } from "../axios";
 import { useNavigate } from "react-router-dom";
-
-export interface MemberI {
-  _id?: string;
-  firstName: string;
-  middleName?: string;
-  lastName: string;
-  email?: string;
-}
+import { MemberI } from "../types";
 
 export const useMembers = () => {
   const navigate = useNavigate();

@@ -1,9 +1,13 @@
 import { useDisclosure } from "@mantine/hooks";
 import { AppShell, Burger, Group, Title, UnstyledButton } from "@mantine/core";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../lib/hooks";
 
 export const PageContainer: React.FC<any> = ({ children }) => {
   const [opened, { toggle }] = useDisclosure();
+  const { loading } = useAuth();
+
+  if (loading) return <div>Loading...</div>;
 
   return (
     <AppShell

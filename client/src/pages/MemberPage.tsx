@@ -1,36 +1,30 @@
-import { useParams } from "react-router-dom"
-import { PageContainer } from "../layout"
-import { Avatar } from '@mantine/core'
-import { useQuery } from 'react-query'
-import { membersQuery } from '../lib/queries'
-import { Parents, Siblings, Spouse } from "../components"
+import { useEffect, useState } from "react";
+import { PageContainer } from "../layout";
+import { server } from "../lib/axios";
+import { useParams } from "react-router-dom";
+import { MemberI } from "../lib/types";
+import { FamilyTabs } from "../components/members/family/FamilyTabs";
 
 export const MemberPage = () => {
-  const { memberId } = useParams()
-  const { data, status } = useQuery('members', membersQuery)
+  const params = useParams();
+  const [memberFamily, setMemberFamily] = useState<MemberI | null>(null);
+  const { memberId } = params;
 
-  if (status === 'loading') return <div>Loading...</div>
+  const getFamily = async (id: string) => {
+    const response = await server.get(`/members/family?id=${id}`);
+    console.log(response.data);
+    setMemberFamily(response.data);
+  };
 
-  const member = data?.find((a: any) => a._id === memberId)
-  const mother = data?.find((d: any) => d._id === member?.motherId)
-  const father = data?.find((d: any) => d._id === member?.fatherId)
+  useEffect(() => {
+    if (memberId) getFamily(memberId);
+  }, [memberId]);
 
-  const siblings = data?.filter((d: any) => (
-    (!!d.fatherId && d.fatherId === father?._id || !!d.motherId && d.motherId === mother?._id) &&
-    d._id !== memberId)
-  )
-
-  const spouse = data?.find(d => d._id === member?.spouseId)
+  // if (!memberFamily?._id) return <>No member found</>;
 
   return (
     <PageContainer>
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
-        <Avatar size='xl'></Avatar>
-      </div>
-      <h3 style={{ textAlign: 'center' }}>{member?.firstName} {member?.lastName}</h3>
-      <Parents mother={mother} father={father} member={member} />
-      <Siblings siblings={siblings} />
-      <Spouse member={member} spouse={spouse} />
+      {memberFamily && <FamilyTabs memberFamily={memberFamily} />}
     </PageContainer>
-  )
-}
+  );
+};

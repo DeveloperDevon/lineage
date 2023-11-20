@@ -5,6 +5,8 @@ const membersRouter = Router();
 
 membersRouter.post("/", handlers.addNewMemberHandler);
 membersRouter.get("/", handlers.findAllMembersHandler);
+membersRouter.get("/family", handlers.memberFamilyHandler);
+membersRouter.post("/relationship", handlers.addRelationshipHandler);
 membersRouter.put(
   "/child-parent-relationship",
   handlers.setChildParentRelationshipHandler,

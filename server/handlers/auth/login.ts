@@ -5,11 +5,14 @@ import { verifyMember } from "../../db";
 export const loginHandler = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-    const { verified, user } = await verifyMember(email, password);
-    if (!verified) return res.status(403).send(user);
+    const { verified, member } = await verifyMember(email, password);
+    if (!verified) {
+      res.clearCookie("authToken");
+      return res.status(403).send({ authorized: false, member });
+    }
 
     return jwt.sign(
-      { user },
+      { member },
       "secret",
       { expiresIn: "10m", algorithm: "HS256" },
       (err, authToken) => {
@@ -20,7 +23,7 @@ export const loginHandler = async (req: Request, res: Response) => {
           // sameSite: "strict",
         });
 
-        return res.json({ verified, user });
+        return res.json({ verified, member });
       },
     );
   } catch (error) {

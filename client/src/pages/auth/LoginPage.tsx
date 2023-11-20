@@ -1,11 +1,11 @@
 import { AuthContainer } from "../../layout";
-import { useNavigate } from "react-router-dom";
 import { Button, Container, Fieldset, Group, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { server } from "../../lib/axios";
+import { useAuth } from "../../lib/hooks";
 
 export const LoginPage = () => {
-  const navigate = useNavigate();
+  const { login } = useAuth();
+
   const form = useForm({
     initialValues: {
       email: "reichardt22@gmail.com",
@@ -17,9 +17,7 @@ export const LoginPage = () => {
   });
 
   const handleSubmit = async (values: { email: string; password: string }) => {
-    const response = await server.post("/auth/login", values);
-    const { verified } = response.data;
-    if (verified) navigate("/", { replace: true });
+    await login(values);
   };
 
   return (

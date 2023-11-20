@@ -17,10 +17,12 @@ export const authHandler = async (req: Request, res: Response) => {
         .status(401)
         .send({ authorized: false, reason: "Token Invalid" });
 
-    return res.status(200).send({ authorized: true, user: isTokenValid?.user });
-  } catch (error) {
+    return res
+      .status(200)
+      .send({ authorized: true, member: isTokenValid?.member });
+  } catch (error: any) {
     console.error(error);
-    return res.status(401).send({ authorized: false, reason: error });
+    return res.status(401).send({ authorized: false, reason: error.message });
   }
 };
 
