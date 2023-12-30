@@ -1,29 +1,22 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import * as Layouts from './layout'
 import * as Pages from "./pages";
-
-const router = createBrowserRouter([
-  {
-    path: "/login",
-    element: <Pages.LoginPage />,
-  },
-  {
-    path: "/",
-    element: <Pages.HomePage />,
-  },
-  {
-    path: "/member/:memberId",
-    element: <Pages.MemberPage />,
-  },
-  {
-    path: "/members",
-    element: <Pages.ManageMembersPage />,
-  },
-]);
 
 export const Router = () => {
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      <RouterProvider router={router} />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/auth' element={<Layouts.AuthLayout />}>
+          <Route path='login' element={<Pages.LoginPage />} />
+        </Route>
+        <Route path='/' element={<Layouts.DefaultLayout />}>
+          <Route path='/' element={<Pages.HomePage />} />
+          <Route path='/comments' element={<Pages.CommentsPage />} />
+          <Route path='/members' element={<Pages.ManageMembersPage />} />
+          <Route path='/member/:memberId' element={<Pages.MemberPage />} />
+          <Route path='/photos' element={<Pages.PhotosPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 };

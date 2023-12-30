@@ -1,4 +1,4 @@
-export * from './AddMember'
+export * from './AddMemberForm'
 export * from './ManageMembers'
 export * from './MemberCard'
 export * from './Parents'

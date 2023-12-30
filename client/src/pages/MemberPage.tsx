@@ -1,30 +1,27 @@
-import { useEffect, useState } from "react";
-import { PageContainer } from "../layout";
-import { server } from "../lib/axios";
 import { useParams } from "react-router-dom";
-import { MemberI } from "../lib/types";
-import { FamilyTabs } from "../components/members/family/FamilyTabs";
+import { useFamilyMembers } from "../lib/queries";
+import { PageLoader } from "../components";
+import { Center, Text } from "@mantine/core";
 
 export const MemberPage = () => {
   const params = useParams();
-  const [memberFamily, setMemberFamily] = useState<MemberI | null>(null);
   const { memberId } = params;
 
-  const getFamily = async (id: string) => {
-    const response = await server.get(`/members/family?id=${id}`);
-    console.log(response.data);
-    setMemberFamily(response.data);
-  };
+  const { data: member, isLoading, isError } = useFamilyMembers(memberId)
 
-  useEffect(() => {
-    if (memberId) getFamily(memberId);
-  }, [memberId]);
+  if (isLoading) return <PageLoader />
 
-  // if (!memberFamily?._id) return <>No member found</>;
+  if (isError) return (
+    <Center>
+      <Text>No Member Found</Text>
+    </Center>
+  )
 
   return (
-    <PageContainer>
-      {memberFamily && <FamilyTabs memberFamily={memberFamily} />}
-    </PageContainer>
+    <>
+      <Text size='xl'>{member?.firstName} {member?.lastName}</Text>
+      <pre>{JSON.stringify(member, null, 2)}</pre>
+      {/* {memberFamily && <FamilyTabs memberFamily={memberFamily} />} */}
+    </>
   );
 };

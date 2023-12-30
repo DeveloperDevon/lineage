@@ -13,14 +13,16 @@ export type Relationship =
   | "Children"
   | "Child";
 
-export interface MemberI {
+export type Member = {
   _id: string;
   firstName: string;
   middleName?: string;
   lastName: string;
   email?: string;
   spouseId?: string;
-  spouse?: MemberI[];
+  spouse?: Member[];
   childrenIds?: string[];
-  children?: MemberI[];
+  children?: Member[];
+  father?: Member
+  mother?: Member
 }

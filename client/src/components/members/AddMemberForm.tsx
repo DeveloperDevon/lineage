@@ -1,80 +1,59 @@
-import { FC } from "react";
-import { TextInput, NativeSelect, Button, Group, Box } from "@mantine/core";
+import { Fieldset, TextInput, Group, Button } from "@mantine/core"
 import { useForm } from "@mantine/form";
-import { server } from "../../lib/axios";
-import { MemberI } from "../../lib/types";
 
-interface AddMemberFormProps {
-  member?: MemberI;
-  showRelationship?: boolean;
-}
-
-export const AddMemberForm: FC<AddMemberFormProps> = ({
-  member,
-  showRelationship,
-}) => {
-  // TODO: filter relationships based on available to add
-  const relationships = ["Father", "Mother", "Sibling", "Spouse", "Child"];
+export const AddMemberForm = () => {
+  const initialValues = {
+    firstName: "",
+    lastName: "",
+    middleName: "",
+    email: "",
+  };
 
   const form = useForm({
-    initialValues: {
-      firstName: "",
-      middleName: "",
-      lastName: "",
-      relationship: relationships[0],
+    initialValues,
+    validate: {
+      firstName: (val) => (val.length < 1 ? "First Name is Required" : null),
+      lastName: (val) => (val.length < 1 ? "Last Name is Required" : null),
+      email: (value) =>
+        /^\S+@\S+$/.test(value) || value.length < 1 ? null : "Invalid email",
     },
-
-    // validate: {
-    //   email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-    // },
   });
 
-  const handleSubmit = async (values: any) => {
-    // await server.post("/member", values).then(console.log).catch(console.error);
-    if (showRelationship) {
-      const { relationship, firstName, middleName, lastName } = values;
-      await server
-        .post("/members/relationship", {
-          member,
-          relationship,
-          newMember: { firstName, middleName, lastName },
-        })
-        .then(console.log)
-        .catch(console.error);
-    }
-    console.log(values);
+  const handleSubmit = (values: any) => {
+    // addMember(values);
+    console.log(values)
+    // form.setValues(initialValues);
   };
 
   return (
-    <div>
-      <Box p="10px">
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          {showRelationship && (
-            <NativeSelect
-              label="Relationship"
-              data={relationships}
-              {...form.getInputProps("relationship")}
-            />
-          )}
-          <TextInput
-            withAsterisk
-            label="First Name"
-            {...form.getInputProps("firstName")}
-          />
-          <TextInput
-            label="Middle Name"
-            {...form.getInputProps("middleName")}
-          />
-          <TextInput
-            withAsterisk
-            label="Last Name"
-            {...form.getInputProps("lastName")}
-          />
-          <Group mt="md">
-            <Button type="submit">Submit</Button>
-          </Group>
-        </form>
-      </Box>
-    </div>
-  );
-};
+    <Fieldset legend="Add Member">
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <TextInput
+          label="First name"
+          placeholder="First name"
+          {...form.getInputProps("firstName")}
+        />
+        <TextInput
+          label="Middle name"
+          placeholder="Middle name"
+          {...form.getInputProps("middleName")}
+        />
+        <TextInput
+          label="Last name"
+          placeholder="Last name"
+          {...form.getInputProps("lastName")}
+        />
+        <TextInput
+          label="Email"
+          placeholder="Email"
+          {...form.getInputProps("email")}
+        />
+        <Group justify="flex-end" mt="md">
+          <Button type="submit" my="lg">
+            Add
+          </Button>
+        </Group>
+      </form>
+    </Fieldset>
+  )
+}

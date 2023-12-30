@@ -1,10 +1,10 @@
 import { FC } from 'react'
 import { Card, Container } from '@mantine/core'
 import { useNavigate } from 'react-router-dom'
-import { IMember } from '../../lib/types'
+import { Member } from '../../lib/types'
 
 interface SiblingsProps {
-  siblings?: IMember[]
+  siblings?: Member[]
 }
 
 export const Siblings: FC<SiblingsProps> = ({ siblings }) => {

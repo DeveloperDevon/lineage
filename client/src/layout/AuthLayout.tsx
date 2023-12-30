@@ -1,6 +1,7 @@
 import { AppShell, Group, Title } from "@mantine/core";
+import { Outlet } from "react-router-dom";
 
-export const AuthContainer: React.FC<any> = ({ children }) => {
+export const AuthLayout = () => {
   return (
     <AppShell
       header={{
@@ -18,7 +19,9 @@ export const AuthContainer: React.FC<any> = ({ children }) => {
         </Group>
       </AppShell.Header>
 
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main>
+        <Outlet />
+      </AppShell.Main>
     </AppShell>
   );
 };

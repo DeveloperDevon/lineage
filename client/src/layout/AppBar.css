@@ -1,9 +1,0 @@
-.appbar-container {
-  background-color: #242424;
-  color: rgba(255, 255, 255, 0.87);
-  display: flex; 
-  flex-direction: row;
-  justify-content: space-between;
-  border: 1px solid grey;
-  padding: 5px 10px
-}

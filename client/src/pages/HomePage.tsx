@@ -1,31 +1,20 @@
-import { useEffect, useState } from "react";
-import { PageContainer } from "../layout";
-import { Title } from "@mantine/core";
-import { MemberI, useAuth } from "../lib/hooks";
-import { FamilyMemberGroup } from "../components/members/FamilyMemberGroup";
-import { server } from "../lib/axios";
+import { Text } from "@mantine/core";
+import { useAuth, useFamilyMembers } from "../lib/queries";
 
 export const HomePage = () => {
-  const { member } = useAuth();
-  const [memberFamily, setMemberFamily] = useState<MemberI | null>(null);
-
-  const getFamily = async (id: string) => {
-    const response = await server.get(`/members/family?id=${id}`);
-    setMemberFamily(response.data);
-  };
-
-  useEffect(() => {
-    if (member?._id) getFamily(member?._id);
-  }, [member?._id]);
+  const { data: user } = useAuth();
+  const { data: userFamily } = useFamilyMembers(user?._id)
 
   return (
-    <PageContainer>
-      <Title mb={20} order={2}>
-        My Family
-      </Title>
-      <FamilyMemberGroup title="Parents" members={[]} />
-      <FamilyMemberGroup title="Spouse" members={memberFamily?.spouse} />
-      <FamilyMemberGroup title="Children" members={memberFamily?.children} />
-    </PageContainer>
+    <>
+      <Text size='xl'>{user?.firstName} {user?.lastName}</Text>
+      <Text>Email: {user?.email}</Text>
+      <Text>Father: {userFamily?.father?.firstName} {userFamily?.father?.lastName}</Text>
+      <Text>Mother: {userFamily?.mother?.firstName} {userFamily?.mother?.lastName}</Text>
+      <Text mb={20}>User</Text>
+      <pre>{JSON.stringify(user, null, 2)}</pre>
+      <Text mb={20}>User Family</Text>
+      <pre>{JSON.stringify(userFamily, null, 2)}</pre>
+    </>
   );
 };

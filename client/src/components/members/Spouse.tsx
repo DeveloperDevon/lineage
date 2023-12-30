@@ -3,17 +3,17 @@ import { useQuery } from 'react-query';
 import { Button, Card, Container, Modal } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks';
 import { membersQuery } from '../../lib/queries';
-import { IMember } from '../../lib/types';
+import { Member } from '../../lib/types';
 import { server } from '../../lib/axios';
 import { MemberCard } from '.';
 
 interface SpouseProps {
-  member?: IMember
-  spouse?: IMember
+  member?: Member
+  spouse?: Member
 }
 
 export const Spouse: FC<SpouseProps> = ({ member, spouse }) => {
-  const [selectedSpouse, setSelectedSpouse] = useState<IMember | null>(null)
+  const [selectedSpouse, setSelectedSpouse] = useState<Member | null>(null)
   const [opened, { open, close }] = useDisclosure(false);
   const { data } = useQuery('members', membersQuery)
 

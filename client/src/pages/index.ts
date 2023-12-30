@@ -1,4 +1,6 @@
-export * from './auth'
+export * from './CommentsPage'
 export * from './HomePage'
+export * from './LoginPage'
 export * from './MembersPage'
 export * from './MemberPage'
+export * from './PhotosPage'

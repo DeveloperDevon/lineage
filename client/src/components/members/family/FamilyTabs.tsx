@@ -1,14 +1,13 @@
-import { FC } from "react";
 import { Tabs } from "@mantine/core";
 import { FamilyTab } from "./FamilyTab";
-import { MemberI } from "../../../lib/types";
+import { Member } from "../../../lib/types";
 import { AddMemberTab } from "./AddMemberTab";
 
-interface FamilyTabs {
-  memberFamily: MemberI;
+type Props = {
+  memberFamily: Member;
 }
 
-export const FamilyTabs: FC<FamilyTabs> = ({ memberFamily }) => {
+export const FamilyTabs = ({ memberFamily }: Props) => {
   return (
     <Tabs defaultValue="family">
       <Tabs.List>

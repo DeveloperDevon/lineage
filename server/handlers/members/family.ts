@@ -6,8 +6,10 @@ export const memberFamilyHandler = async (req: Request, res: Response) => {
   if (!id) return res.status(403).send("Id is required");
   try {
     const member = await getMemberFamily(id as string);
-    console.log(member);
     delete member.password;
+    member.father = member.father[0]
+    member.mother = member.mother[0]
+    member.spouse = member.spouse[0]
     res.send(member);
   } catch (error) {
     console.error(error);

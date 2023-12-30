@@ -1,13 +1,12 @@
-import { FC } from "react";
 import { Title } from "@mantine/core";
-import { MemberI } from "../../../lib/types";
+import { Member } from "../../../lib/types";
 import { FamilyMemberGroup } from "../FamilyMemberGroup";
 
-interface FamilyTabProps {
-  memberFamily: MemberI | null;
+type Props = {
+  memberFamily: Member | null;
 }
 
-export const FamilyTab: FC<FamilyTabProps> = ({ memberFamily }) => {
+export const FamilyTab = ({ memberFamily }: Props) => {
   return (
     <>
       <Title m={20} order={2}>

@@ -27,3 +27,4 @@ export const authHandler = async (req: Request, res: Response) => {
 };
 
 export * from "./login";
+export * from './logout'

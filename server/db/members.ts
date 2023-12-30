@@ -20,9 +20,25 @@ export const getMemberFamily = async (memberId: string) => {
       {
         $lookup: {
           from: "members",
-          localField: "parentIds",
+          localField: "fatherId",
           foreignField: "_id",
-          as: "parents",
+          as: "father",
+        },
+      },
+      {
+        $lookup: {
+          from: "members",
+          localField: "motherId",
+          foreignField: "_id",
+          as: "mother",
+        },
+      },
+      {
+        $lookup: {
+          from: "members",
+          localField: "siblingIds",
+          foreignField: "_id",
+          as: "siblings",
         },
       },
       {
@@ -43,6 +59,7 @@ export const getMemberFamily = async (memberId: string) => {
       },
     ]);
     const memberFamily = await familyMembers.toArray();
+    console.log('~~~~', { memberFamily })
     return memberFamily[0];
   } catch (error) {
     console.error(error);
