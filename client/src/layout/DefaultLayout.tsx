@@ -1,5 +1,15 @@
 import { useDisclosure } from "@mantine/hooks";
-import { AppShell, Avatar, Burger, Group, Menu, NavLink, Title, UnstyledButton, useMantineColorScheme } from "@mantine/core";
+import {
+  AppShell,
+  Avatar,
+  Burger,
+  Group,
+  Menu,
+  NavLink,
+  Title,
+  UnstyledButton,
+  useMantineColorScheme,
+} from "@mantine/core";
 import { Outlet, NavLink as Link, useLocation } from "react-router-dom";
 import { useAuth } from "../lib/queries";
 import { PageLoader } from "../components";
@@ -9,23 +19,22 @@ export const DefaultLayout = () => {
   const [opened, { toggle }] = useDisclosure();
   const { data, isLoading } = useAuth();
   const { colorScheme, setColorScheme } = useMantineColorScheme();
-  const logout = useLogoutMutation()
+  const logout = useLogoutMutation();
 
-  const location = useLocation()
-  console.log({ location, pathName: location.pathname })
+  const location = useLocation();
 
   const toggleTheme = () => {
-    setColorScheme(colorScheme === 'dark' ? 'light' : 'dark')
-  }
+    setColorScheme(colorScheme === "dark" ? "light" : "dark");
+  };
 
   const navLinks = [
-    { label: 'Home', path: '/' },
-    { label: 'Comments', path: '/comments' },
-    { label: 'Photos', path: '/photos' },
-    { label: 'Members', path: '/members' },
-  ]
+    { label: "Home", path: "/" },
+    { label: "Comments", path: "/comments" },
+    { label: "Photo Album", path: "/photos" },
+    { label: "Members", path: "/members" },
+  ];
 
-  if (isLoading) return <PageLoader />
+  if (isLoading) return <PageLoader />;
 
   return (
     <AppShell
@@ -34,26 +43,36 @@ export const DefaultLayout = () => {
       navbar={{
         width: 300,
         // width: { base: 200, md: 300, lg: 400 },
-        breakpoint: "sm",
-        collapsed: { mobile: !opened },
+        // breakpoint: "sm",
+        // collapsed: { mobile: !opened },
       }}
     >
       <AppShell.Header>
-        <Group h="100%" px="md" justify='space-between'>
+        <Group h="100%" px="md" justify="space-between">
           <Group>
-            <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+            <Burger
+              opened={opened}
+              onClick={toggle}
+              hiddenFrom="sm"
+              size="sm"
+            />
             <Title>Kin</Title>
           </Group>
           <Group>
             <Menu shadow="md" width={200}>
               <Menu.Target>
                 <UnstyledButton>
-                  <Avatar color='blue'>{data?.firstName[0]}{data?.lastName[0]}</Avatar>
+                  <Avatar color="blue">
+                    {data?.firstName[0]}
+                    {data?.lastName[0]}
+                  </Avatar>
                 </UnstyledButton>
               </Menu.Target>
               <Menu.Dropdown>
                 <Menu.Item>Profile</Menu.Item>
-                <Menu.Item onClick={toggleTheme}>{colorScheme === 'dark' ? 'Light Mode' : 'Dark Mode'}</Menu.Item>
+                <Menu.Item onClick={toggleTheme}>
+                  {colorScheme === "dark" ? "Light Mode" : "Dark Mode"}
+                </Menu.Item>
                 <Menu.Item onClick={() => logout.mutate()}>Logout</Menu.Item>
               </Menu.Dropdown>
             </Menu>
@@ -62,18 +81,16 @@ export const DefaultLayout = () => {
       </AppShell.Header>
 
       <AppShell.Navbar p="md">
-        {navLinks.map(({ label, path }) =>
-        (
+        {navLinks.map(({ label, path }) => (
           <NavLink
             key={label}
-            variant='filled'
+            variant="filled"
             label={label}
             component={Link}
             to={path}
             active={location.pathname === path}
           />
-        )
-        )}
+        ))}
       </AppShell.Navbar>
 
       <AppShell.Main>

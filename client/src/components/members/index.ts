@@ -1,6 +1,1 @@
-export * from './AddMemberForm'
-export * from './ManageMembers'
-export * from './MemberCard'
-export * from './Parents'
-export * from './Siblings'
-export * from './Spouse'
+export * from "./AddMemberForm";

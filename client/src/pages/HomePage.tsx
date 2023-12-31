@@ -1,20 +1,16 @@
 import { Text } from "@mantine/core";
 import { useAuth, useFamilyMembers } from "../lib/queries";
+import { Member } from "../lib/types";
+import { MemberInfo } from "../components/members/MemberInfo";
 
 export const HomePage = () => {
   const { data: user } = useAuth();
-  const { data: userFamily } = useFamilyMembers(user?._id)
+
+  if (!user?._id) return <Text>No User Found</Text>;
 
   return (
     <>
-      <Text size='xl'>{user?.firstName} {user?.lastName}</Text>
-      <Text>Email: {user?.email}</Text>
-      <Text>Father: {userFamily?.father?.firstName} {userFamily?.father?.lastName}</Text>
-      <Text>Mother: {userFamily?.mother?.firstName} {userFamily?.mother?.lastName}</Text>
-      <Text mb={20}>User</Text>
-      <pre>{JSON.stringify(user, null, 2)}</pre>
-      <Text mb={20}>User Family</Text>
-      <pre>{JSON.stringify(userFamily, null, 2)}</pre>
+      <MemberInfo memberId={user?._id} />
     </>
   );
 };
