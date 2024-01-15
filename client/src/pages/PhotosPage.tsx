@@ -1,3 +1,3 @@
 export const PhotosPage = () => {
-  return <>PhotosPage</>
-}
+  return <>Photo Album</>;
+};

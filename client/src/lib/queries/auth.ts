@@ -1,11 +1,11 @@
 import { useQuery } from "react-query";
 import { server } from "../axios";
-import { Member } from "../types";
+import { User } from "../types";
 import { useNavigate } from "react-router-dom";
 
-const getAuth = async (): Promise<Member> => {
+const getAuth = async (): Promise<User> => {
   return await server.get("/auth")
-    .then(res => res.data.member)
+    .then(res => res.data.user)
 };
 
 export const useAuth = () => {

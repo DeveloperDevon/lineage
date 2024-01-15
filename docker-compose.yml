@@ -49,3 +49,20 @@ services:
     depends_on:
       - db
     image: mongo-express
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    mem_limit: 256m
+    cpu_shares: 768
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://postgres:5051
+    environment:
+      PGADMIN_DEFAULT_EMAIL: reichardt22@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: Dr1nklocal
+      PGADMIN_LISTEN_PORT: 5051
+    ports:
+      - 5051:5051
+    volumes:
+      - ~/docker/pgadmin:/var/lib/pgadmin:rw
+    restart: on-failure:5
+

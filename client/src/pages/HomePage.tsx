@@ -1,16 +1,15 @@
 import { Text } from "@mantine/core";
-import { useAuth, useFamilyMembers } from "../lib/queries";
-import { Member } from "../lib/types";
+import { useAuth } from "../lib/queries";
 import { MemberInfo } from "../components/members/MemberInfo";
 
 export const HomePage = () => {
   const { data: user } = useAuth();
 
-  if (!user?._id) return <Text>No User Found</Text>;
+  if (!user?.id) return <Text>No User Found</Text>;
 
   return (
     <>
-      <MemberInfo memberId={user?._id} />
+      <MemberInfo id={user?.id} />
     </>
   );
 };

@@ -17,7 +17,7 @@ import { useLogoutMutation } from "../lib/mutations/logout";
 
 export const DefaultLayout = () => {
   const [opened, { toggle }] = useDisclosure();
-  const { data, isLoading } = useAuth();
+  const { data: user, isLoading } = useAuth();
   const { colorScheme, setColorScheme } = useMantineColorScheme();
   const logout = useLogoutMutation();
 
@@ -41,9 +41,9 @@ export const DefaultLayout = () => {
       padding="md"
       header={{ height: { base: 60, md: 70, lg: 80 } }}
       navbar={{
-        width: 300,
-        // width: { base: 200, md: 300, lg: 400 },
-        // breakpoint: "sm",
+        // width: 300,
+        width: { base: 200, md: 300, lg: 400 },
+        breakpoint: "sm",
         // collapsed: { mobile: !opened },
       }}
     >
@@ -63,8 +63,8 @@ export const DefaultLayout = () => {
               <Menu.Target>
                 <UnstyledButton>
                   <Avatar color="blue">
-                    {data?.firstName[0]}
-                    {data?.lastName[0]}
+                    {user?.firstName[0]}
+                    {user?.lastName[0]}
                   </Avatar>
                 </UnstyledButton>
               </Menu.Target>

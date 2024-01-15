@@ -1,12 +1,20 @@
-import { Fieldset, TextInput, Group, Button } from "@mantine/core"
+import { Fieldset, TextInput, Group, Button, Select } from "@mantine/core"
 import { useForm } from "@mantine/form";
+import { useAddMemberMutation } from "../../lib/mutations";
+import { useEffect } from "react";
 
-export const AddMemberForm = () => {
+type Props = {
+  onClose: () => void
+}
+
+export const AddMemberForm = ({ onClose }: Props) => {
+  const addMemberMutation = useAddMemberMutation()
   const initialValues = {
-    firstName: "",
-    lastName: "",
+    firstName: "Clayton",
+    lastName: "Reichardt",
     middleName: "",
     email: "",
+    gender: "male"
   };
 
   const form = useForm({
@@ -20,10 +28,13 @@ export const AddMemberForm = () => {
   });
 
   const handleSubmit = (values: any) => {
-    // addMember(values);
-    console.log(values)
-    // form.setValues(initialValues);
+    addMemberMutation.mutate(values)
   };
+
+  useEffect(() => {
+    if (addMemberMutation.isSuccess) onClose()
+
+  }, [addMemberMutation.isSuccess])
 
   return (
     <Fieldset legend="Add Member">
@@ -48,6 +59,7 @@ export const AddMemberForm = () => {
           placeholder="Email"
           {...form.getInputProps("email")}
         />
+        <Select label="Gender" placeholder="Gender" {...form.getInputProps('gender')} data={['male', 'female']} />
         <Group justify="flex-end" mt="md">
           <Button type="submit" my="lg">
             Add

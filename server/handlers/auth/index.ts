@@ -11,6 +11,7 @@ export const authHandler = async (req: Request, res: Response) => {
         .send({ authorized: false, reason: "No Auth Token" });
 
     const isTokenValid = jwt.verify(cookies.authToken, "secret") as any;
+    console.log({ isTokenValid: isTokenValid.user })
 
     if (!isTokenValid)
       return res
@@ -19,7 +20,7 @@ export const authHandler = async (req: Request, res: Response) => {
 
     return res
       .status(200)
-      .send({ authorized: true, member: isTokenValid?.member });
+      .send({ authorized: true, user: isTokenValid.user });
   } catch (error: any) {
     console.error(error);
     return res.status(401).send({ authorized: false, reason: error.message });

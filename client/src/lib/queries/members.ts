@@ -1,10 +1,10 @@
 import { useQuery } from "react-query";
 import { server } from "../axios";
-import { Member } from "../types";
+import { User } from "../types";
 
-export const membersQuery = async (): Promise<Member[]> =>
+export const membersQuery = async (): Promise<User[]> =>
   server.get("/members").then((res) => {
-    const members = res.data ?? [];
+    const members = res.data.members ?? [];
     return members;
   });
 

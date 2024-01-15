@@ -15,7 +15,7 @@ export const MemberPage = () => {
 
   return (
     <>
-      <MemberInfo memberId={memberId} />
+      <MemberInfo id={Number(memberId)} />
     </>
   );
 };
